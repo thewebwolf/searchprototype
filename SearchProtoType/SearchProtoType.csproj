@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndFilterFactory.cs" />
+    <Compile Include="ForeignKeyFilterFactory.cs" />
+    <Compile Include="ModelA.cs" />
+    <Compile Include="ModelB.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchFactory.cs" />

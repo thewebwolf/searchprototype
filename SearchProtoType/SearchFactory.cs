@@ -28,21 +28,14 @@ namespace SearchProtoType
             return source;
         }
 
-        public BufferBlock<TKey> SourceKeys(PropertyInfo propertyInfo = null)
+        public TransformBlock<TResult, FKey> ForeignKeys<FKey>(PropertyInfo propertyInfo)
         {
-            BufferBlock<TKey> source = new BufferBlock<TKey>();
-            if (!propertyInfo.PropertyType.Equals(typeof(TKey))) throw new Exception("PrimaryKey types do not match.");
+            if (!propertyInfo.PropertyType.Equals(typeof(FKey))) throw new Exception("ForeignKey types do not match.");
 
-            foreach (TResult item in sourceData)
+            return new TransformBlock<TResult, FKey>(item =>
             {
-                TKey key = (TKey)propertyInfo.GetValue(item);
-
-                if (key != null)
-                {
-                    source.SendAsync(key);
-                }
-            }
-            return source;
+                return (FKey)propertyInfo.GetValue(item);
+            });
         }
 
         public TransformManyBlock<TResult, TResult> ExpressionFilter(Expression<Func<TResult, bool>> filter)
@@ -52,6 +45,7 @@ namespace SearchProtoType
                 return Filter(item, filter);
             });
         }
+
         public TransformManyBlock<TResult, TResult> AndFilter(int sources)
         {
             return new TransformManyBlock<TResult, TResult>(item =>
@@ -59,10 +53,12 @@ namespace SearchProtoType
                 return CountCheck(item);
             });
         }
+
         private IEnumerable<TResult> CountCheck(TResult item)
         {
             yield return item;
         }
+
         private IEnumerable<TResult> Filter(TResult item, Expression<Func<TResult, bool>> filter)
         {
             var function = filter.Compile();
