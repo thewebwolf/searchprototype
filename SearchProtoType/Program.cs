@@ -45,7 +45,7 @@ namespace SearchProtoType
                 else actionA.Complete();
             });
 
-            sourceBlockA.Complete();
+ 
 
             actionA.Completion.Wait();
 
@@ -76,7 +76,6 @@ namespace SearchProtoType
                 else actionB.Complete();
             });
 
-            sourceBlockB.Complete();
             actionB.Completion.Wait();
 
             Console.WriteLine("Completed B");
@@ -100,7 +99,6 @@ namespace SearchProtoType
                 Console.WriteLine(item.Name);
             });
 
-
             sourceBlockC.LinkTo(andFilterA);
             andFilterA.LinkTo(actionC);
 
@@ -117,7 +115,6 @@ namespace SearchProtoType
             });
 
             sourceBlockC.Post(new ModelA() { Id = 2, Name = "Second C", ForeignKey = 2 });
-            sourceBlockC.Complete();
 
             actionC.Completion.Wait();
             Console.WriteLine("Completed C");
@@ -156,7 +153,7 @@ namespace SearchProtoType
             subKeys.LinkTo(joinBlock.Target2);
             joinBlock.LinkTo(foreignKeyFilter);
             foreignKeyFilter.LinkTo(actionD);
-
+            
             sourceBlockD.Completion.ContinueWith(t =>
             {
                 if (t.IsFaulted) ((IDataflowBlock)joinBlock.Target1).Fault(t.Exception);
@@ -184,8 +181,6 @@ namespace SearchProtoType
                 if (t.IsFaulted) ((IDataflowBlock)actionD).Fault(t.Exception);
                 else actionD.Complete();
             });
-            sourceBlockD.Complete();
-            sourceBlockE.Complete();
 
             actionD.Completion.Wait();
 

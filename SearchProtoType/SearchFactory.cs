@@ -25,6 +25,7 @@ namespace SearchProtoType
             {
                 source.SendAsync(item);
             }
+            source.Complete();
             return source;
         }
 
