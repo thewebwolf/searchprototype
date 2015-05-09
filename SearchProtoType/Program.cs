@@ -188,6 +188,9 @@ namespace SearchProtoType
             sourceBlockE.Complete();
 
             actionD.Completion.Wait();
+
+            Console.WriteLine("Completed D");
+            Console.WriteLine("-----------------------");
             Console.ReadLine();
         }
     }

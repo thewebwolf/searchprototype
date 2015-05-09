@@ -46,19 +46,6 @@ namespace SearchProtoType
             });
         }
 
-        public TransformManyBlock<TResult, TResult> AndFilter(int sources)
-        {
-            return new TransformManyBlock<TResult, TResult>(item =>
-            {
-                return CountCheck(item);
-            });
-        }
-
-        private IEnumerable<TResult> CountCheck(TResult item)
-        {
-            yield return item;
-        }
-
         private IEnumerable<TResult> Filter(TResult item, Expression<Func<TResult, bool>> filter)
         {
             var function = filter.Compile();
